@@ -19,11 +19,14 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "sec", nullable = false)
-    private String sec;
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
-    @Column(name = "add", nullable = false)
-    private String add;
+    @Column(name = "section", nullable = false)
+    private String section;
+
+    @Column(name = "address", nullable = false)
+    private String address;
 
     @Column(name = "status", nullable = false)
     private String status;
