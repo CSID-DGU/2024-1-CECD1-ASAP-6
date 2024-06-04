@@ -1,4 +1,4 @@
-package domain;
+package org.dongguk.asap_server.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,5 +34,9 @@ public class User {
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
 
-
+    public void update(String status){
+        this.lastStatus = this.status;
+        this.status = status;
+        editedAt = LocalDateTime.now();
+    }
 }

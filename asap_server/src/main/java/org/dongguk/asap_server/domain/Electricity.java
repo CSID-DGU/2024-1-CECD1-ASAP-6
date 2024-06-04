@@ -1,4 +1,4 @@
-package domain;
+package org.dongguk.asap_server.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
