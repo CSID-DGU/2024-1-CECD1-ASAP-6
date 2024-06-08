@@ -20,4 +20,6 @@ public class UserController {
 
         return ResponseDto.ok(userService.readRealtimeStatus(sect, page, size));
     }
+
+
 }
