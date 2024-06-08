@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum EStatus {
-    NOMAL("NOMAL"),
+    NORMAL("NORMAL"),
     WARN("WARN"),
     DANG("DANG");
 

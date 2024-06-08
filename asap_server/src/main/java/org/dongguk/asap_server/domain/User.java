@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.dongguk.asap_server.type.EStatus;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
@@ -29,15 +30,17 @@ public class User {
     private String address;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
 
     @Column(name = "last_status")
-    private String lastStatus;
+    @Enumerated(EnumType.STRING)
+    private EStatus lastStatus;
 
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
 
-    public void update(String status){
+    public void update(EStatus status){
         this.lastStatus = this.status;
         this.status = status;
         editedAt = LocalDateTime.now();
