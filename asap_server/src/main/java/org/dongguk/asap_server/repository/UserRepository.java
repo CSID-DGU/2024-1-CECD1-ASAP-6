@@ -16,11 +16,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u " +
             "where u.section = :section AND " +
-            ":status is null or u.status = :status AND " +
-            ":text is null or u.address like '%:text%' " +
+            ":status is null or u.status = :status AND" +
+            "(:text IS NULL OR u.address LIKE CONCAT('%', :text, '%')) " +
             "order by u.address")
     Page<User> findAllBySectionAndStatusWithAddress(Pageable pageable,
-                                                    @Param("section") String section,
                                                     @Param("status") EStatus status,
+                                                    @Param("section") String section,
                                                     @Param("text") String text);
 }
