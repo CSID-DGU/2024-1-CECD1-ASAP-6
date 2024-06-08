@@ -28,4 +28,8 @@ public class UserService {
 
         return PagingResponseDto.fromEntityAndPageInfo(statusDtos, pageInfoDto);
     }
+
+    public PagingResponseDto<?> searchStatus(String sect, int page, int size){
+
+    }
 }
