@@ -3,6 +3,7 @@ package org.dongguk.asap_server.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dongguk.asap_server.dto.common.ResponseDto;
+import org.dongguk.asap_server.dto.user.request.RescueRequestDto;
 import org.dongguk.asap_server.service.UserService;
 import org.dongguk.asap_server.type.EStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +29,10 @@ public class UserController {
                                              @RequestParam("page") Integer page,
                                              @RequestParam("size") Integer size){
         return ResponseDto.ok(userService.searchHouseStatus(sect, filt, text, page, size));
+    }
+
+    @PostMapping("/rescue")
+    public ResponseDto<?> requestRescue(@RequestBody RescueRequestDto rescueRequestDto){
+        return ResponseDto.ok(userService.rescue(rescueRequestDto));
     }
 }

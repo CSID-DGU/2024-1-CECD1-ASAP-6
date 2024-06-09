@@ -35,3 +35,6 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+nurigo:
+  api-key : NCSEZASHIWVTM9MN
+  api-secret-key: ULVR13M5QUJA995PAMUI0EYTEWP9MPYD
