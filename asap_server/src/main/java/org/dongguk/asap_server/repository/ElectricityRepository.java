@@ -11,12 +11,13 @@ import java.util.List;
 
 @Repository
 public interface ElectricityRepository extends JpaRepository<Electricity, Long> {
-    @Query("SELECT e.at, AVG(e.elec) FROM Electricity e " +
+
+    @Query("SELECT DATE(e.at), AVG(e.elec) FROM Electricity e " +
             "JOIN e.user u " +
             "WHERE u.section = :section " +
             "AND e.at BETWEEN :startDate AND :endDate " +
-            "GROUP BY e.at " +
-            "ORDER BY e.at DESC")
+            "GROUP BY DATE(e.at) " +
+            "ORDER BY DATE(e.at) DESC")
     List<Object[]> findAverageElectricityUsageBySectionAndDate(
             @Param("section") String section,
             @Param("startDate") LocalDateTime startDate,
@@ -26,7 +27,7 @@ public interface ElectricityRepository extends JpaRepository<Electricity, Long> 
             "JOIN e.user u " +
             "WHERE u.section = :section " +
             "AND e.at BETWEEN :startDate AND :endDate " +
-            "GROUP BY WEEK(e.at, 1) " +
+            "GROUP BY WEEK(e.at) " +
             "ORDER BY weekStart")
     List<Object[]> findWeeklyAverageElectricityUsageBySection(
             @Param("section") String section,

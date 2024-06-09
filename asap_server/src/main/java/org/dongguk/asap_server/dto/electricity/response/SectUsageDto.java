@@ -5,6 +5,9 @@ import org.dongguk.asap_server.domain.Electricity;
 import org.dongguk.asap_server.domain.User;
 import org.dongguk.asap_server.dto.user.response.StatusDto;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +21,27 @@ public record SectUsageDto(
         List<SectUsageDto> dtoList = new ArrayList<>();
 
         for(Object row[] : electricities){
-            LocalDateTime time = (LocalDateTime) row[0];
+            LocalDate dateTime;
+
+            if (row[0] instanceof Timestamp) {
+                dateTime = ((Timestamp) row[0]).toLocalDateTime().toLocalDate();
+            } else if (row[0] instanceof Date) {
+                Date date = (Date) row[0];
+                dateTime = LocalDate.from(date.toLocalDate().atStartOfDay());
+            } else {
+                throw new IllegalArgumentException("Unsupported date type: " + row[0].getClass().getName());
+            }
+
             Double elec = (Double) row[1];
             SectUsageDto statusDto =
                     SectUsageDto.builder()
-                            .time(time.toString())
+                            .time(dateTime.toString())
                             .elec(elec)
                             .build();
 
             dtoList.add(statusDto);
         }
 
-        return dtoList;
+        return dtoList.subList(1,6);
     }
 }

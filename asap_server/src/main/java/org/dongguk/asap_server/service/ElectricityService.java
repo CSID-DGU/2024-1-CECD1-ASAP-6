@@ -31,7 +31,7 @@ public class ElectricityService {
         switch (filt){
             case DAY :
                 endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘 00:00
-                startDate = endDate.minusDays(5); // 4일 전 00:00
+                startDate = endDate.minusDays(5);
                 electricities = electricityRepository.findAverageElectricityUsageBySectionAndDate(sect, startDate, endDate);
                 return SectUsageDto.fromEntityList(electricities);
             case WEEK:

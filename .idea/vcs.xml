@@ -2,9 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-<<<<<<< HEAD
-=======
     <mapping directory="$PROJECT_DIR$/asap_client" vcs="Git" />
->>>>>>> dd14231f4948caa695c562d71642aba792890ad9
   </component>
 </project>
