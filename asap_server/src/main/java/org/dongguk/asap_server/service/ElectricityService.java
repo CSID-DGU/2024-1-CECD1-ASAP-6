@@ -2,12 +2,15 @@ package org.dongguk.asap_server.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dongguk.asap_server.dto.electricity.response.DiffDto;
 import org.dongguk.asap_server.dto.electricity.response.UsageDto;
 import org.dongguk.asap_server.dto.electricity.response.SectUsageDto;
 import org.dongguk.asap_server.repository.ElectricityRepository;
 import org.dongguk.asap_server.type.EDuration;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -115,5 +118,48 @@ public class ElectricityService {
 
         log.info("empty list");
         return Collections.emptyList();
+    }
+
+    public DiffDto readMetOver(Long id, EDuration filt) {
+        List<Object[]> houseElec = null;
+        List<Object[]> metElec = null;
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        LocalDateTime today;
+
+        switch (filt){
+            case DAY :
+                endDate = LocalDate.of(2024, 6, 9).atStartOfDay().minusMinutes(1); // 오늘 00:00
+                startDate = endDate.minusDays(6);
+                houseElec = electricityRepository.findAverageElectricityUsageByIdAndDate(id, startDate, endDate);
+                metElec = electricityRepository.findAverageElectricityUsageByDate(startDate, endDate);
+            case WEEK:
+                today = LocalDate.of(2024, 6, 8).atStartOfDay();
+                startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(5);
+                endDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)); // 가장 최근 토요일
+
+                houseElec = electricityRepository.findWeeklyAverageElectricityUsageById(id, startDate, endDate);
+                metElec = electricityRepository.findWeeklyAverageElectricityUsage(startDate, endDate);
+            case MONTH:
+                endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
+                startDate = endDate.minusMonths(5).withDayOfMonth(1);
+
+                houseElec = electricityRepository.findMonthlyAverageElectricityUsageById(id, startDate, endDate);
+                metElec = electricityRepository.findMonthlyAverageElectricityUsage(startDate, endDate);
+        }
+
+        double house = 0;
+        double met = 0;
+        for(int i = 0; i < houseElec.size(); i++){
+            house += (Double) houseElec.get(i)[1];
+            met += (Double) metElec.get(i)[1];
+        }
+        log.info(String.valueOf(house));
+        log.info(String.valueOf(met));
+
+        double diff = ((house - met) / house) * 100;
+
+        return DiffDto.fromDiff(diff);
     }
 }

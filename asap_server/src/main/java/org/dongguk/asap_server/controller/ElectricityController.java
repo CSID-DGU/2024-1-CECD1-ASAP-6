@@ -34,4 +34,10 @@ public class ElectricityController {
     public ResponseDto<?> readMetUsage(@RequestParam("filt") EDuration filt){
         return ResponseDto.ok(electricityService.readMetUsage(filt));
     }
+
+    @GetMapping("/met/over")
+    public ResponseDto<?> readMetOver(@RequestParam("id") Long id,
+                                      @RequestParam("filt") EDuration filt){
+        return ResponseDto.ok(electricityService.readMetOver(id, filt));
+    }
 }
