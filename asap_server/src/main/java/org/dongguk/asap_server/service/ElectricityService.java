@@ -84,4 +84,36 @@ public class ElectricityService {
         log.info("empty list");
         return Collections.emptyList();
     }
+
+    public List<UsageDto> readMetUsage(EDuration filt) {
+        List<Object[]> electricities;
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        LocalDateTime today;
+
+        switch (filt){
+            case DAY :
+                endDate = LocalDate.of(2024, 6, 9).atStartOfDay().minusMinutes(1); // 오늘 00:00
+                startDate = endDate.minusDays(6);
+                electricities = electricityRepository.findAverageElectricityUsageByDate(startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
+            case WEEK:
+                today = LocalDate.of(2024, 6, 8).atStartOfDay();
+                startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(5);
+                endDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)); // 가장 최근 토요일
+
+                electricities = electricityRepository.findWeeklyAverageElectricityUsage(startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
+            case MONTH:
+                endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
+                startDate = endDate.minusMonths(5).withDayOfMonth(1);
+
+                electricities = electricityRepository.findMonthlyAverageElectricityUsage(startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
+        }
+
+        log.info("empty list");
+        return Collections.emptyList();
+    }
 }

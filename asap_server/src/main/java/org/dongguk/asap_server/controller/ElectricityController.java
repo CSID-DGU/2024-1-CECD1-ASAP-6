@@ -29,4 +29,9 @@ public class ElectricityController {
                                              @RequestParam("filt") EDuration filt){
         return ResponseDto.ok(electricityService.readHouseUsage(id, filt));
     }
+
+    @GetMapping("/met/usage")
+    public ResponseDto<?> readMetUsage(@RequestParam("filt") EDuration filt){
+        return ResponseDto.ok(electricityService.readMetUsage(filt));
+    }
 }
