@@ -28,7 +28,7 @@ public interface ElectricityRepository extends JpaRepository<Electricity, Long> 
             "WHERE u.section = :section " +
             "AND e.at BETWEEN :startDate AND :endDate " +
             "GROUP BY WEEK(e.at) " +
-            "ORDER BY weekStart")
+            "ORDER BY weekStart DESC")
     List<Object[]> findWeeklyAverageElectricityUsageBySection(
             @Param("section") String section,
             @Param("startDate") LocalDateTime startDate,
@@ -39,7 +39,7 @@ public interface ElectricityRepository extends JpaRepository<Electricity, Long> 
             "WHERE u.section = :section " +
             "AND e.at BETWEEN :startDate AND :endDate " +
             "GROUP BY YEAR(e.at), MONTH(e.at) " +
-            "ORDER BY monthStart")
+            "ORDER BY monthStart DESC")
     List<Object[]> findMonthlyAverageElectricityUsageBySection(
             @Param("section") String section,
             @Param("startDate") LocalDateTime startDate,

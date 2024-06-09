@@ -21,13 +21,15 @@ public record SectUsageDto(
         List<SectUsageDto> dtoList = new ArrayList<>();
 
         for(Object row[] : electricities){
-            LocalDate dateTime;
+            LocalDateTime dateTime;
 
+            // 다양한 날짜 타입 처리
             if (row[0] instanceof Timestamp) {
-                dateTime = ((Timestamp) row[0]).toLocalDateTime().toLocalDate();
+                dateTime = ((Timestamp) row[0]).toLocalDateTime();
             } else if (row[0] instanceof Date) {
-                Date date = (Date) row[0];
-                dateTime = LocalDate.from(date.toLocalDate().atStartOfDay());
+                dateTime = ((Date) row[0]).toLocalDate().atStartOfDay();
+            } else if (row[0] instanceof LocalDateTime) {
+                dateTime = (LocalDateTime) row[0];
             } else {
                 throw new IllegalArgumentException("Unsupported date type: " + row[0].getClass().getName());
             }
@@ -42,6 +44,6 @@ public record SectUsageDto(
             dtoList.add(statusDto);
         }
 
-        return dtoList.subList(1,6);
+        return dtoList.subList(0,5);
     }
 }
