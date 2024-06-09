@@ -30,19 +30,19 @@ public class ElectricityService {
 
         switch (filt){
             case DAY :
-                endDate = LocalDate.now().atStartOfDay(); // 오늘 00:00
+                endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘 00:00
                 startDate = endDate.minusDays(5); // 4일 전 00:00
                 electricities = electricityRepository.findAverageElectricityUsageBySectionAndDate(sect, startDate, endDate);
                 return SectUsageDto.fromEntityList(electricities);
             case WEEK:
-                today = LocalDate.now().atStartOfDay();
+                today = LocalDate.of(2024, 6, 8).atStartOfDay();
                 startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(5); // 5주 전 일요일
                 endDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)); // 가장 최근 토요일
 
                 electricities = electricityRepository.findWeeklyAverageElectricityUsageBySection(sect, startDate, endDate);
                 return SectUsageDto.fromEntityList(electricities);
             case MONTH:
-                endDate = LocalDate.now().atStartOfDay(); // 오늘의 00:00
+                endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
                 startDate = endDate.minusMonths(5).withDayOfMonth(1); // 5개월 전 첫 날
 
                 electricities = electricityRepository.findMonthlyAverageElectricityUsageBySection(sect, startDate, endDate);
