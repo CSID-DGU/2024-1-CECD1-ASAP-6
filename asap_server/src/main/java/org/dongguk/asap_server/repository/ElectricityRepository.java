@@ -32,4 +32,15 @@ public interface ElectricityRepository extends JpaRepository<Electricity, Long> 
             @Param("section") String section,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT MIN(e.at) as monthStart, AVG(e.elec) FROM Electricity e " +
+            "JOIN e.user u " +
+            "WHERE u.section = :section " +
+            "AND e.at BETWEEN :startDate AND :endDate " +
+            "GROUP BY YEAR(e.at), MONTH(e.at) " +
+            "ORDER BY monthStart")
+    List<Object[]> findMonthlyAverageElectricityUsageBySection(
+            @Param("section") String section,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 }
