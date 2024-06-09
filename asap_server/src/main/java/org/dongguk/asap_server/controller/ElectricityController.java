@@ -17,9 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class ElectricityController {
     private final ElectricityService electricityService;
+
     @GetMapping("/sect/usage")
     public ResponseDto<?> readRealTimeStatus(@RequestParam("sect") String sect,
                                              @RequestParam("filt") EDuration filt){
         return ResponseDto.ok(electricityService.readSectUsage(sect,filt));
+    }
+
+    @GetMapping("/house/usage")
+    public ResponseDto<?> readHouseUsage(@RequestParam("id") Long id,
+                                             @RequestParam("filt") EDuration filt){
+        return ResponseDto.ok(electricityService.readHouseUsage(id, filt));
     }
 }

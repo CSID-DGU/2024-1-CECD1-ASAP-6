@@ -44,4 +44,37 @@ public interface ElectricityRepository extends JpaRepository<Electricity, Long> 
             @Param("section") String section,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT DATE(e.at), AVG(e.elec) FROM Electricity e " +
+            "JOIN e.user u " +
+            "WHERE u.id = :id " +
+            "AND e.at BETWEEN :startDate AND :endDate " +
+            "GROUP BY DATE(e.at) " +
+            "ORDER BY DATE(e.at) DESC")
+    List<Object[]> findAverageElectricityUsageByIdAndDate(
+            @Param("id") Long id,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT MIN(e.at) as weekStart, AVG(e.elec) FROM Electricity e " +
+            "JOIN e.user u " +
+            "WHERE u.id = :id " +
+            "AND e.at BETWEEN :startDate AND :endDate " +
+            "GROUP BY WEEK(e.at) " +
+            "ORDER BY weekStart DESC")
+    List<Object[]> findWeeklyAverageElectricityUsageById(
+            @Param("id") Long id,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT MIN(e.at) as monthStart, AVG(e.elec) FROM Electricity e " +
+            "JOIN e.user u " +
+            "WHERE u.id = :id " +
+            "AND e.at BETWEEN :startDate AND :endDate " +
+            "GROUP BY YEAR(e.at), MONTH(e.at) " +
+            "ORDER BY monthStart DESC")
+    List<Object[]> findMonthlyAverageElectricityUsageById(
+            @Param("id") Long id,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 }

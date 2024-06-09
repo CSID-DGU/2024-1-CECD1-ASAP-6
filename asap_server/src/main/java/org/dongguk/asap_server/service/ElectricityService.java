@@ -2,7 +2,7 @@ package org.dongguk.asap_server.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dongguk.asap_server.domain.Electricity;
+import org.dongguk.asap_server.dto.electricity.response.UsageDto;
 import org.dongguk.asap_server.dto.electricity.response.SectUsageDto;
 import org.dongguk.asap_server.repository.ElectricityRepository;
 import org.dongguk.asap_server.type.EDuration;
@@ -36,17 +36,49 @@ public class ElectricityService {
                 return SectUsageDto.fromEntityList(electricities);
             case WEEK:
                 today = LocalDate.of(2024, 6, 8).atStartOfDay();
-                startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(4); // 5주 전 일요일
+                startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(4);
                 endDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)); // 가장 최근 토요일
 
                 electricities = electricityRepository.findWeeklyAverageElectricityUsageBySection(sect, startDate, endDate);
                 return SectUsageDto.fromEntityList(electricities);
             case MONTH:
                 endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
-                startDate = endDate.minusMonths(4).withDayOfMonth(1); // 5개월 전 첫 날
+                startDate = endDate.minusMonths(4).withDayOfMonth(1);
 
                 electricities = electricityRepository.findMonthlyAverageElectricityUsageBySection(sect, startDate, endDate);
                 return SectUsageDto.fromEntityList(electricities);
+        }
+
+        log.info("empty list");
+        return Collections.emptyList();
+    }
+
+    public List<UsageDto> readHouseUsage(Long id, EDuration filt) {
+        List<Object[]> electricities;
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        LocalDateTime today;
+
+        switch (filt){
+            case DAY :
+                endDate = LocalDate.of(2024, 6, 9).atStartOfDay().minusMinutes(1); // 오늘 00:00
+                startDate = endDate.minusDays(6);
+                electricities = electricityRepository.findAverageElectricityUsageByIdAndDate(id, startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
+            case WEEK:
+                today = LocalDate.of(2024, 6, 8).atStartOfDay();
+                startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(5);
+                endDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)); // 가장 최근 토요일
+
+                electricities = electricityRepository.findWeeklyAverageElectricityUsageById(id, startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
+            case MONTH:
+                endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
+                startDate = endDate.minusMonths(5).withDayOfMonth(1);
+
+                electricities = electricityRepository.findMonthlyAverageElectricityUsageById(id, startDate, endDate);
+                return UsageDto.fromEntityList(electricities);
         }
 
         log.info("empty list");

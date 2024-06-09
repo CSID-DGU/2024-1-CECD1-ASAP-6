@@ -1,25 +1,20 @@
 package org.dongguk.asap_server.dto.electricity.response;
 
 import lombok.Builder;
-import org.dongguk.asap_server.domain.Electricity;
-import org.dongguk.asap_server.domain.User;
-import org.dongguk.asap_server.dto.user.response.StatusDto;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Builder
-public record SectUsageDto(
+public record UsageDto(
         String time,
         Double elec
 ) {
-    public static List<SectUsageDto> fromEntityList(List<Object[]> electricities){
-        List<SectUsageDto> dtoList = new ArrayList<>();
+    public static List<UsageDto> fromEntityList(List<Object[]> electricities) {
+        List<UsageDto> dtoList = new ArrayList<>();
 
         for(Object row[] : electricities){
             LocalDateTime dateTime;
@@ -36,15 +31,15 @@ public record SectUsageDto(
             }
 
             Double elec = (Double) row[1];
-            SectUsageDto statusDto =
-                    SectUsageDto.builder()
+            UsageDto usageDto =
+                    UsageDto.builder()
                             .time(dateTime.toString())
                             .elec(elec)
                             .build();
 
-            dtoList.add(statusDto);
+            dtoList.add(usageDto);
         }
 
-        return dtoList.subList(0,5);
+        return dtoList.subList(0,6);
     }
 }
