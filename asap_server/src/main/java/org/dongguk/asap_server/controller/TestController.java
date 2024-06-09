@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/test")
+@RequestMapping("/test")
 public class TestController {
     @GetMapping("/error")
     public ResponseDto<?> testError(){
         throw new CommonException(ErrorCode.INVALID_PARAMETER);
     }
 
-    @GetMapping("/hello")
+    @GetMapping("")
     public ResponseDto<?> testHello(){
         return ResponseDto.ok("hello, world");
     }
