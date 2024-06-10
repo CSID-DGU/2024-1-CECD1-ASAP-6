@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.section = :section AND u.editedAt IS NOT NULL ORDER BY u.editedAt DESC")
@@ -23,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                                                     @Param("status") EStatus status,
                                                     @Param("section") String section,
                                                     @Param("text") String text);
+
+    List<User> findAllBySection(String section);
 }

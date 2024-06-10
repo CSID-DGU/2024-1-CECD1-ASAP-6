@@ -17,8 +17,8 @@ public class UserController {
 
     @GetMapping("/abnomal")
     public ResponseDto<?> readRealTimeStatus(@RequestParam("sect") String sect,
-                                          @RequestParam("page") Integer page,
-                                          @RequestParam("size") Integer size){
+                                             @RequestParam("page") Integer page,
+                                             @RequestParam("size") Integer size) {
         return ResponseDto.ok(userService.readRealtimeStatus(sect, page, size));
     }
 
@@ -27,12 +27,17 @@ public class UserController {
                                              @RequestParam("filt") EStatus filt,
                                              @RequestParam("text") String text,
                                              @RequestParam("page") Integer page,
-                                             @RequestParam("size") Integer size){
+                                             @RequestParam("size") Integer size) {
         return ResponseDto.ok(userService.searchHouseStatus(sect, filt, text, page, size));
     }
 
     @PostMapping("/rescue")
-    public ResponseDto<?> requestRescue(@RequestBody RescueRequestDto rescueRequestDto){
+    public ResponseDto<?> requestRescue(@RequestBody RescueRequestDto rescueRequestDto) {
         return ResponseDto.ok(userService.rescue(rescueRequestDto));
+    }
+
+    @GetMapping("/sect/stat")
+    public ResponseDto<?> readSectStat(@RequestParam("sect") String sect) {
+        return ResponseDto.ok(userService.readSectStat(sect));
     }
 }
