@@ -1,12 +1,12 @@
 HELP.md
 .gradle
-build/
+asap_server/build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ## application.xx ##
-src/main/resources/*.yml
+**/src/main/resources/*.yml
 
 ### STS ###
 .apt_generated
