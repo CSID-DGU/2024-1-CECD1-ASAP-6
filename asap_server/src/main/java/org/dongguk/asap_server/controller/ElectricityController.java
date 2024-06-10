@@ -39,5 +39,5 @@ public class ElectricityController {
     public ResponseDto<?> readMetOver(@RequestParam("id") Long id,
                                       @RequestParam("filt") EDuration filt){
         return ResponseDto.ok(electricityService.readMetOver(id, filt));
-    }
+    } // 시 대비 평균 사용 초과량
 }

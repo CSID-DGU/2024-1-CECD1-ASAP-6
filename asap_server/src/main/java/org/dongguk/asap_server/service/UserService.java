@@ -11,6 +11,7 @@ import org.dongguk.asap_server.dto.common.PagingResponseDto;
 import org.dongguk.asap_server.dto.user.request.RescueRequestDto;
 import org.dongguk.asap_server.dto.user.response.RescueDto;
 import org.dongguk.asap_server.dto.user.response.SearchHouseDto;
+import org.dongguk.asap_server.dto.user.response.SectStatusDto;
 import org.dongguk.asap_server.dto.user.response.StatusDto;
 import org.dongguk.asap_server.exception.CommonException;
 import org.dongguk.asap_server.exception.ErrorCode;
@@ -84,5 +85,11 @@ public class UserService {
                 .receiverPhone(phone)
                 .message(msg)
                 .build();
+    }
+
+    public SectStatusDto readSectStat(String sect) {
+        List<User> users = userRepository.findAllBySection(sect);
+
+        return SectStatusDto.fromEntityList(users);
     }
 }

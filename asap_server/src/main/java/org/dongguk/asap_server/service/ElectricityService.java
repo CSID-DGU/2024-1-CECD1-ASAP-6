@@ -134,6 +134,7 @@ public class ElectricityService {
                 startDate = endDate.minusDays(6);
                 houseElec = electricityRepository.findAverageElectricityUsageByIdAndDate(id, startDate, endDate);
                 metElec = electricityRepository.findAverageElectricityUsageByDate(startDate, endDate);
+                break;
             case WEEK:
                 today = LocalDate.of(2024, 6, 8).atStartOfDay();
                 startDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(5);
@@ -141,12 +142,14 @@ public class ElectricityService {
 
                 houseElec = electricityRepository.findWeeklyAverageElectricityUsageById(id, startDate, endDate);
                 metElec = electricityRepository.findWeeklyAverageElectricityUsage(startDate, endDate);
+                break;
             case MONTH:
                 endDate = LocalDate.of(2024, 6, 8).atStartOfDay(); // 오늘의 00:00
                 startDate = endDate.minusMonths(5).withDayOfMonth(1);
 
                 houseElec = electricityRepository.findMonthlyAverageElectricityUsageById(id, startDate, endDate);
                 metElec = electricityRepository.findMonthlyAverageElectricityUsage(startDate, endDate);
+                break;
         }
 
         double house = 0;
@@ -161,5 +164,5 @@ public class ElectricityService {
         double diff = ((house - met) / house) * 100;
 
         return DiffDto.fromDiff(diff);
-    }
+    } // 시 대비 평균 사용 초과량
 }
